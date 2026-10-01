@@ -3,268 +3,1020 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Serviergegenstände – Digitale Präsentation</title>
+
+<!-- Moderne Schrift -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
 <style>
-:root{--gold:#d8b56a;--gold2:#f4df9b;--bg:#062b3a;--glass:rgba(255,255,255,.09)}
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{width:100%;height:100%;overflow:hidden;font-family:Inter,sans-serif;background:#06384d;color:#fff}
-body:before{content:"";position:fixed;inset:-20%;z-index:-3;background:
-radial-gradient(circle at 15% 15%,rgba(40,190,220,.42),transparent 30%),
-radial-gradient(circle at 85% 25%,rgba(20,120,190,.38),transparent 32%),
-radial-gradient(circle at 50% 75%,rgba(0,210,220,.28),transparent 38%),
-linear-gradient(135deg,#06384d 0%,#075875 45%,#042d50 100%);animation:water 12s ease-in-out infinite alternate}
-@keyframes water{to{transform:scale(1.15) translate(-2%,2%);filter:blur(8px)}}
-.water{position:fixed;width:120%;height:45%;bottom:-20%;left:-10%;background:rgba(30,180,220,.20);border-radius:50% 50% 0 0;filter:blur(8px);animation:wave 7s ease-in-out infinite alternate;z-index:-2}
-@keyframes wave{to{transform:rotate(2deg) scale(1.08)}}
-.presentation{width:100vw;height:100vh;position:relative;perspective:1800px}
-.slide{position:absolute;inset:0;padding:5vh 7vw 9vh;display:flex;flex-direction:column;justify-content:center;opacity:0;visibility:hidden;transform:translateZ(-500px) rotateY(35deg) scale(.82);transition:opacity .8s,transform 1s cubic-bezier(.2,.8,.2,1),visibility .8s}
-.slide.active{opacity:1;visibility:visible;transform:translateZ(0) rotateY(0) scale(1)}
-.slide.previous{transform:translateZ(-700px) rotateY(-45deg) scale(.75)}
-.glass{background:linear-gradient(135deg,rgba(255,255,255,.13),rgba(255,255,255,.035));border:1px solid rgba(255,255,255,.18);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 25px 80px rgba(0,0,0,.35),inset 0 1px rgba(255,255,255,.12);border-radius:28px}
-.cover{align-items:center;text-align:center}.cover .glass{padding:65px;max-width:1100px}
-.kicker,.category{color:var(--gold2);text-transform:uppercase;letter-spacing:4px;font-size:13px;font-weight:700;margin-bottom:15px}
-h1{font:700 clamp(48px,7vw,105px)/.95 "Playfair Display",serif;margin-bottom:25px}
-h2{font:600 clamp(34px,5vw,65px)/1.05 "Playfair Display",serif;margin-bottom:15px}
-.gold,h2 span{color:var(--gold2)}
-.subtitle{max-width:850px;color:rgba(255,255,255,.72);font-size:clamp(16px,1.5vw,23px);line-height:1.7}
-.content{display:grid;grid-template-columns:1fr 1fr;gap:45px;align-items:center}
-.photo{width:100%;height:52vh;object-fit:cover;border-radius:26px;border:1px solid rgba(255,255,255,.2);box-shadow:0 30px 80px rgba(0,0,0,.45);transition:transform .6s}
-.photo:hover{transform:scale(1.025)}
-.info{padding:38px}.info p{color:rgba(255,255,255,.75);line-height:1.65;margin-bottom:18px}
-.items{display:grid;gap:10px;margin-top:18px}.item{padding:13px 16px;border-radius:15px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.09);line-height:1.45;font-size:14px;transition:.3s}.item:hover{background:rgba(216,181,106,.12);transform:translateX(7px)}.item b{color:var(--gold2)}
-.material{display:inline-block;margin-top:18px;padding:9px 15px;border-radius:50px;background:rgba(216,181,106,.13);color:var(--gold2);font-size:13px}
-.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:30px}.card{padding:26px;min-height:180px;transition:transform .5s,background .4s}.card:hover{transform:rotateX(6deg) rotateY(-7deg) translateY(-8px);background:rgba(255,255,255,.13)}.card-icon{font-size:36px;margin-bottom:16px}.card h3{font-size:19px;margin-bottom:10px}.card p{color:rgba(255,255,255,.65);font-size:14px;line-height:1.55}
-.number{position:absolute;top:30px;right:45px;font-size:12px;letter-spacing:3px;color:rgba(255,255,255,.5)}
-.navigation{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);display:flex;align-items:center;justify-content:center;gap:12px;z-index:9999;pointer-events:auto}.nav-btn{width:52px;height:52px;border-radius:50%;border:1px solid rgba(255,255,255,.2);background:rgba(0,0,0,.35);color:white;cursor:pointer;font-size:20px;backdrop-filter:blur(12px);transition:.3s}.nav-btn:hover{background:rgba(216,181,106,.25);transform:scale(1.08)}.dots{display:flex;gap:7px}.dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.3);transition:.3s;cursor:pointer}.dot.active{width:28px;border-radius:10px;background:var(--gold)}
-.progress{position:fixed;left:0;bottom:0;height:3px;background:var(--gold);width:0;transition:width .5s;z-index:200}
-@media(max-width:850px){body{overflow:hidden}.slide{padding:30px 20px 90px;overflow-y:auto;justify-content:flex-start}.content{grid-template-columns:1fr;gap:18px}.photo{height:27vh}.cards{grid-template-columns:1fr;gap:12px}.card{min-height:auto;padding:20px}.cover{justify-content:center}.cover .glass{padding:35px 20px}.info{padding:25px}h1{font-size:48px}h2{font-size:35px}.number{top:15px;right:20px}}
 
-/* Zusätzliche Regeln für sichere Bedienung auf Touch-Geräten */
-.navigation,
-.nav-btn,
-.dots,
-.dot { touch-action: manipulation; }
-
-.nav-btn { position: relative; z-index: 10000; }
-.dot { border: 0; padding: 0; }
-
-
-.water:before,.water:after{
-    content:"";
-    position:absolute;
-    left:0;
-    width:100%;
-    height:100%;
-    border-radius:50%;
-    background:rgba(70,210,235,.10);
-    filter:blur(12px);
+:root {
+    --gold: #d8b56a;
+    --gold-light: #f4df9b;
+    --dark: #071216;
+    --dark2: #0d2025;
+    --white: #ffffff;
+    --glass: rgba(255,255,255,.09);
+    --border: rgba(255,255,255,.18);
 }
-.water:before{transform:translateY(-25px) scale(.95);}
-.water:after{transform:translateY(20px) scale(1.08);}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: "Inter", sans-serif;
+    background: #061014;
+    color: white;
+}
+
+/* =========================
+   WASSER-HINTERGRUND
+========================= */
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: -20%;
+    background:
+        radial-gradient(circle at 20% 20%, rgba(60,170,190,.20), transparent 30%),
+        radial-gradient(circle at 80% 70%, rgba(210,170,80,.14), transparent 30%),
+        radial-gradient(circle at 50% 50%, rgba(20,110,130,.20), transparent 40%);
+    animation: water 12s ease-in-out infinite alternate;
+    z-index: -3;
+}
+
+@keyframes water {
+    0% {
+        transform: scale(1) translate(0,0);
+        filter: blur(0);
+    }
+    100% {
+        transform: scale(1.15) translate(-2%,2%);
+        filter: blur(8px);
+    }
+}
+
+/* Wasserlinien */
+
+.water {
+    position: fixed;
+    width: 120%;
+    height: 45%;
+    bottom: -20%;
+    left: -10%;
+    background: rgba(30,150,170,.12);
+    border-radius: 50% 50% 0 0;
+    filter: blur(8px);
+    animation: wave 7s ease-in-out infinite alternate;
+    z-index: -2;
+}
+
+@keyframes wave {
+    from { transform: rotate(-2deg) scale(1); }
+    to   { transform: rotate(2deg) scale(1.08); }
+}
+
+/* =========================
+   PRÄSENTATION
+========================= */
+
+.presentation {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    perspective: 1800px;
+}
+
+.slide {
+    position: absolute;
+    inset: 0;
+    padding: 5vh 7vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    opacity: 0;
+    visibility: hidden;
+
+    transform:
+        translateZ(-500px)
+        rotateY(35deg)
+        scale(.82);
+
+    transition:
+        opacity .8s ease,
+        transform 1s cubic-bezier(.2,.8,.2,1),
+        visibility .8s;
+}
+
+.slide.active {
+    opacity: 1;
+    visibility: visible;
+
+    transform:
+        translateZ(0)
+        rotateY(0)
+        scale(1);
+}
+
+.slide.previous {
+    transform:
+        translateZ(-700px)
+        rotateY(-45deg)
+        scale(.75);
+}
+
+/* =========================
+   GLASS CARD
+========================= */
+
+.glass {
+    background: linear-gradient(
+        135deg,
+        rgba(255,255,255,.13),
+        rgba(255,255,255,.035)
+    );
+
+    border: 1px solid var(--border);
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    box-shadow:
+        0 25px 80px rgba(0,0,0,.35),
+        inset 0 1px rgba(255,255,255,.12);
+
+    border-radius: 28px;
+}
+
+/* =========================
+   TITEL
+========================= */
+
+.kicker {
+    color: var(--gold-light);
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+h1 {
+    font-family: "Playfair Display", serif;
+    font-size: clamp(48px, 7vw, 105px);
+    line-height: .95;
+    margin-bottom: 25px;
+}
+
+h2 {
+    font-family: "Playfair Display", serif;
+    font-size: clamp(36px, 5vw, 65px);
+    margin-bottom: 15px;
+}
+
+.subtitle {
+    max-width: 850px;
+    color: rgba(255,255,255,.72);
+    font-size: clamp(16px, 1.5vw, 23px);
+    line-height: 1.7;
+}
+
+/* =========================
+   COVER
+========================= */
+
+.cover {
+    align-items: center;
+    text-align: center;
+}
+
+.cover .glass {
+    padding: 65px;
+    max-width: 1100px;
+}
+
+.gold {
+    color: var(--gold-light);
+}
+
+.number {
+    position: absolute;
+    top: 35px;
+    right: 50px;
+    font-size: 13px;
+    letter-spacing: 3px;
+    color: rgba(255,255,255,.5);
+}
+
+/* =========================
+   CONTENT LAYOUT
+========================= */
+
+.content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 45px;
+    align-items: center;
+}
+
+.photo {
+    width: 100%;
+    height: 55vh;
+    object-fit: cover;
+    border-radius: 26px;
+
+    border: 1px solid rgba(255,255,255,.2);
+
+    box-shadow:
+        0 30px 80px rgba(0,0,0,.45);
+
+    transition: transform .6s ease;
+}
+
+.photo:hover {
+    transform: scale(1.025);
+}
+
+.info {
+    padding: 38px;
+}
+
+.info h2 {
+    color: white;
+}
+
+.info h2 span {
+    color: var(--gold-light);
+}
+
+.info p {
+    color: rgba(255,255,255,.75);
+    line-height: 1.65;
+    margin-bottom: 18px;
+}
+
+/* =========================
+   LISTEN
+========================= */
+
+.items {
+    display: grid;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.item {
+    padding: 15px 18px;
+    border-radius: 15px;
+
+    background: rgba(255,255,255,.055);
+    border: 1px solid rgba(255,255,255,.09);
+
+    transition: .3s;
+}
+
+.item:hover {
+    background: rgba(216,181,106,.12);
+    transform: translateX(8px);
+}
+
+.item b {
+    color: var(--gold-light);
+}
+
+.material {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 9px 15px;
+    border-radius: 50px;
+    background: rgba(216,181,106,.13);
+    color: var(--gold-light);
+    font-size: 13px;
+}
+
+/* =========================
+   3D KARTEN
+========================= */
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.card {
+    padding: 28px;
+    min-height: 190px;
+    transition: transform .5s ease, background .4s;
+    transform-style: preserve-3d;
+}
+
+.card:hover {
+    transform:
+        rotateX(6deg)
+        rotateY(-7deg)
+        translateY(-8px);
+    background: rgba(255,255,255,.13);
+}
+
+.card-icon {
+    font-size: 38px;
+    margin-bottom: 18px;
+}
+
+.card h3 {
+    font-size: 19px;
+    margin-bottom: 10px;
+}
+
+.card p {
+    color: rgba(255,255,255,.65);
+    font-size: 14px;
+    line-height: 1.55;
+}
+
+/* =========================
+   5 THEMEN
+========================= */
+
+.category {
+    margin-bottom: 10px;
+    color: var(--gold-light);
+    font-size: 13px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+
+/* =========================
+   NAVIGATION
+========================= */
+
+.navigation {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 100;
+}
+
+.nav-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+
+    border: 1px solid rgba(255,255,255,.2);
+    background: rgba(0,0,0,.35);
+    color: white;
+
+    cursor: pointer;
+    font-size: 18px;
+
+    backdrop-filter: blur(12px);
+    transition: .3s;
+}
+
+.nav-btn:hover {
+    background: rgba(216,181,106,.25);
+    transform: scale(1.08);
+}
+
+.dots {
+    display: flex;
+    gap: 7px;
+}
+
+.dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.3);
+    transition: .3s;
+}
+
+.dot.active {
+    width: 28px;
+    border-radius: 10px;
+    background: var(--gold);
+}
+
+/* =========================
+   FORTSCHRITT
+========================= */
+
+.progress {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    height: 3px;
+    background: var(--gold);
+    width: 0%;
+    transition: width .5s;
+    z-index: 200;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width: 850px) {
+
+    .slide {
+        padding: 35px 25px 90px;
+        overflow-y: auto;
+    }
+
+    .content {
+        grid-template-columns: 1fr;
+    }
+
+    .photo {
+        height: 30vh;
+    }
+
+    .cards {
+        grid-template-columns: 1fr;
+    }
+
+    .cover .glass {
+        padding: 35px 20px;
+    }
+}
 
 </style>
 </head>
+
 <body>
+
 <div class="water"></div>
+
 <div class="presentation">
 
+<!-- =========================
+     SLIDE 1
+========================= -->
+
 <section class="slide active cover">
-<div class="glass"><div class="kicker">Gastronomie & Hotellerie</div>
-<h1>Servier<span class="gold">gegenstände</span></h1>
-<p class="subtitle">Eine digitale Übersicht über Serviergeschirr, Servierbesteck, Getränkebehälter, Tischmenagen und wichtige Hilfsmittel.</p>
-<div style="margin-top:35px;color:#d8b56a;letter-spacing:2px">DIGITALE PRÄSENTATION · THEMA 5</div></div><div class="number">01 / 07</div>
+
+    <div class="glass">
+
+        <div class="kicker">
+            Gastronomie & Hotellerie
+        </div>
+
+        <h1>
+            Servier<span class="gold">gegenstände</span>
+        </h1>
+
+        <p class="subtitle">
+            Eine digitale Übersicht über Serviergeschirr,
+            Servierbesteck, Getränkebehälter,
+            Tischmenagen und wichtige Hilfsmittel.
+        </p>
+
+        <div style="margin-top:35px;color:#d8b56a;">
+            DIGITALE PRÄSENTATION · THEMA 5
+        </div>
+
+    </div>
+
+    <div class="number">01 / 07</div>
+
 </section>
 
-<section class="slide">
-<div class="category">01 · Serviergeschirr</div>
-<div class="content">
-<img class="photo" src="https://images.unsplash.com/photo-1576867757603-05b134ebc379?auto=format&fit=crop&w=1200&q=85" alt="Serviergeschirr">
-<div class="glass info"><h2>Servier<span>geschirr</span></h2>
-<p>Serviergeschirr wird verwendet, um Speisen ansprechend und professionell am Tisch zu präsentieren.</p>
-<div class="items">
-<div class="item"><b>Gegenstände:</b> Servierplatten, Schüsseln, Saucieren, Suppenterrinen, Brotkörbe</div>
-<div class="item"><b>Materialien:</b> Porzellan, Keramik, Edelstahl, Glas und Flechtwerk</div>
-<div class="item"><b>Umgang:</b> Vor dem Servieren auf Risse und Abplatzungen prüfen.</div>
-<div class="item"><b>Wichtig:</b> Heiße Speisen in vorgewärmten Terrinen oder Schüsseln servieren.</div>
-<div class="item"><b>Platzierung:</b> Platten und Schüsseln von links präsentieren oder in der Tischmitte platzieren.</div>
-</div><span class="material">Professionelles Anrichten</span></div></div><div class="number">02 / 07</div>
-</section>
+
+<!-- =========================
+     SLIDE 2
+========================= -->
 
 <section class="slide">
-<div class="category">02 · Servierbesteck</div>
-<div class="content">
-<div class="glass info"><h2>Servier<span>besteck</span></h2>
-<p>Servierbesteck ermöglicht ein hygienisches, präzises und elegantes Vorlegen der Speisen.</p>
-<div class="items">
-<div class="item"><b>Gegenstände:</b> Servierlöffel, Serviergabel, Salatbesteck, Tortenheber, Schöpflöffel</div>
-<div class="item"><b>Weitere:</b> Gebäckzange und Eiszange</div>
-<div class="item"><b>Material:</b> Edelstahl 18/10, versilbertes Metall, Silber</div>
-<div class="item"><b>Regel:</b> Immer mit Anlegebesteck arbeiten – niemals mit bloßen Händen.</div>
-<div class="item"><b>Service:</b> Griffe zeigen beim Vorlegen zum Gast. Bei Speisenwechsel das Besteck austauschen.</div>
-</div></div>
-<img class="photo" src="https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=1200&q=85" alt="Servierbesteck"></div><div class="number">03 / 07</div>
+
+    <div class="category">01 · Serviergeschirr</div>
+
+    <div class="content">
+
+        <img class="photo"
+        src="https://images.unsplash.com/photo-1576867757603-05b134ebc379?auto=format&fit=crop&w=1200&q=85"
+        alt="Serviergeschirr">
+
+        <div class="glass info">
+
+            <h2>
+                Servier<span>geschirr</span>
+            </h2>
+
+            <p>
+                Serviergeschirr wird verwendet, um Speisen
+                ansprechend und professionell am Tisch zu präsentieren.
+            </p>
+
+            <div class="items">
+
+                <div class="item">
+                    <b>Gegenstände:</b>
+                    Servierplatten, Schüsseln, Saucieren,
+                    Suppenterrinen, Brotkörbe
+                </div>
+
+                <div class="item">
+                    <b>Materialien:</b>
+                    Porzellan, Keramik, Edelstahl,
+                    Glas und Flechtwerk
+                </div>
+
+                <div class="item">
+                    <b>Umgang:</b>
+                    Vor dem Servieren auf Risse und Abplatzungen prüfen.
+                </div>
+
+                <div class="item">
+                    <b>Wichtig:</b>
+                    Heiße Speisen in vorgewärmten Terrinen
+                    oder Schüsseln servieren.
+                </div>
+
+            </div>
+
+            <span class="material">
+                Professionelles Anrichten
+            </span>
+
+        </div>
+
+    </div>
+
+    <div class="number">02 / 07</div>
+
 </section>
 
-<section class="slide">
-<div class="category">03 · Getränkebehälter</div>
-<div class="content">
-<img class="photo" src="https://images.unsplash.com/photo-1547595628-c61a29f496f0?auto=format&fit=crop&w=1200&q=85" alt="Getränkebehälter">
-<div class="glass info"><h2>Geträn<span>kebehälter</span></h2>
-<p>Getränkebehälter sorgen für eine stilvolle Präsentation und einen sicheren Getränkeservice.</p>
-<div class="items">
-<div class="item"><b>Gegenstände:</b> Wasser- und Saftkaraffen, Weindekanter, Kaffee- und Teekannen, Eiskühler</div>
-<div class="item"><b>Material:</b> Glas, Kristallglas, Edelstahl, Porzellan</div>
-<div class="item"><b>Service:</b> Wein- und Wasserkaraffen von rechts nachschenken.</div>
-<div class="item"><b>Kontrolle:</b> Dekanter vor der Nutzung auf Sauberkeit und Geruchsneutralität prüfen.</div>
-<div class="item"><b>Sicherheit:</b> Kannen nie bis zum absoluten Rand füllen, um Tropfen zu vermeiden.</div>
-</div></div></div><div class="number">04 / 07</div>
-</section>
+
+<!-- =========================
+     SLIDE 3
+========================= -->
 
 <section class="slide">
-<div class="category">04 · Tischmenagen & Würzzubehör</div>
-<h2>Tischmenagen <span>& Würzzubehör</span></h2>
-<p class="subtitle">Kleine Details machen einen professionellen gedeckten Tisch aus.</p>
-<div class="cards">
-<div class="card glass"><div class="card-icon">🧂</div><h3>Salz & Pfeffer</h3><p>Streuer regelmäßig kontrollieren. Die Öffnungen dürfen nicht verstopft sein.</p></div>
-<div class="card glass"><div class="card-icon">🫒</div><h3>Essig & Öl</h3><p>Flaschen nach Gebrauch außen abwischen, damit keine klebrigen Ränder entstehen.</p></div>
-<div class="card glass"><div class="card-icon">🥣</div><h3>Senf & Parmesan</h3><p>Senfschälchen und Parmesanstreuer sauber und vollständig bereitstellen.</p></div>
-</div>
-<div class="glass" style="margin-top:25px;padding:18px 25px;color:rgba(255,255,255,.7)"><b style="color:#f4df9b">Materialien:</b> Glas · Edelstahl · Keramik · Kunststoff &nbsp; | &nbsp; <b style="color:#f4df9b">Grundregel:</b> Menagen immer als Einheit auf den Tisch stellen.</div>
-<div class="number">05 / 07</div>
+
+    <div class="category">02 · Servierbesteck</div>
+
+    <div class="content">
+
+        <div class="glass info">
+
+            <h2>
+                Servier<span>besteck</span>
+            </h2>
+
+            <p>
+                Servierbesteck ermöglicht ein hygienisches,
+                präzises und elegantes Vorlegen der Speisen.
+            </p>
+
+            <div class="items">
+
+                <div class="item">
+                    <b>Gegenstände:</b>
+                    Servierlöffel, Serviergabel, Salatbesteck,
+                    Tortenheber, Schöpflöffel
+                </div>
+
+                <div class="item">
+                    <b>Weitere:</b>
+                    Gebäckzange und Eiszange
+                </div>
+
+                <div class="item">
+                    <b>Material:</b>
+                    Edelstahl 18/10, versilbertes Metall,
+                    Silber
+                </div>
+
+                <div class="item">
+                    <b>Regel:</b>
+                    Immer mit Anlegebesteck arbeiten –
+                    niemals mit bloßen Händen.
+                </div>
+
+                <div class="item">
+                    <b>Hygiene:</b>
+                    Fingerabdruckfrei und hochglanzpoliert.
+                </div>
+
+            </div>
+
+        </div>
+
+        <img class="photo"
+        src="https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=1200&q=85"
+        alt="Servierbesteck">
+
+    </div>
+
+    <div class="number">03 / 07</div>
+
 </section>
 
+
+<!-- =========================
+     SLIDE 4
+========================= -->
+
 <section class="slide">
-<div class="category">05 · Spezial- & Hilfsmittel</div>
-<div class="content">
-<div class="glass info"><h2>Spezial- & <span>Hilfsmittel</span></h2>
-<p>Diese Gegenstände unterstützen das Servicepersonal beim sicheren und professionellen Arbeiten.</p>
-<div class="items">
-<div class="item"><b>Tabletts:</b> Serviertabletts, möglichst mit rutschfester Oberfläche</div>
-<div class="item"><b>Untersetzer:</b> Schutz für Tischflächen und Möbel</div>
-<div class="item"><b>Rechauds:</b> Zum Warmhalten von Speisen; vor dem Gäste-Eintreffen Funktion prüfen.</div>
-<div class="item"><b>Spezialbesteck:</b> Hummerzangen und Schneckengabeln</div>
-<div class="item"><b>Service-Regel:</b> Tablett auf der linken Hand tragen; mit der rechten Hand servieren oder abräumen.</div>
-</div></div>
-<img class="photo" src="https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?auto=format&fit=crop&w=1200&q=85" alt="Professioneller Service"></div><div class="number">06 / 07</div>
+
+    <div class="category">03 · Getränkebehälter</div>
+
+    <div class="content">
+
+        <img class="photo"
+        src="https://images.unsplash.com/photo-1547595628-c61a29f496f0?auto=format&fit=crop&w=1200&q=85"
+        alt="Getränkebehälter">
+
+        <div class="glass info">
+
+            <h2>
+                Geträn<span>kebehälter</span>
+            </h2>
+
+            <p>
+                Getränkebehälter sorgen für eine stilvolle
+                Präsentation und einen sicheren Getränkeservice.
+            </p>
+
+            <div class="items">
+
+                <div class="item">
+                    <b>Gegenstände:</b>
+                    Wasser- und Saftkaraffen,
+                    Weindekanter, Kaffee- und Teekannen
+                </div>
+
+                <div class="item">
+                    <b>Außerdem:</b>
+                    Eiskühler und Sektkühler
+                </div>
+
+                <div class="item">
+                    <b>Material:</b>
+                    Glas, Kristallglas, Edelstahl, Porzellan
+                </div>
+
+                <div class="item">
+                    <b>Service:</b>
+                    Wein und Wasser von rechts nachschenken.
+                </div>
+
+                <div class="item">
+                    <b>Kontrolle:</b>
+                    Dekanter vor der Nutzung auf Sauberkeit
+                    und Geruchsneutralität prüfen.
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="number">04 / 07</div>
+
 </section>
+
+
+<!-- =========================
+     SLIDE 5
+========================= -->
+
+<section class="slide">
+
+    <div class="category">04 · Tischmenagen & Würzzubehör</div>
+
+    <h2>
+        Tischmenagen <span class="gold">& Würzzubehör</span>
+    </h2>
+
+    <p class="subtitle">
+        Kleine Details machen einen professionellen gedeckten Tisch aus.
+    </p>
+
+    <div class="cards">
+
+        <div class="card glass">
+            <div class="card-icon">🧂</div>
+            <h3>Salz & Pfeffer</h3>
+            <p>
+                Streuer regelmäßig kontrollieren.
+                Die Öffnungen dürfen nicht verstopft sein.
+            </p>
+        </div>
+
+        <div class="card glass">
+            <div class="card-icon">🫒</div>
+            <h3>Essig & Öl</h3>
+            <p>
+                Flaschen nach Gebrauch außen abwischen,
+                damit keine klebrigen Ränder entstehen.
+            </p>
+        </div>
+
+        <div class="card glass">
+            <div class="card-icon">🥣</div>
+            <h3>Senf & Parmesan</h3>
+            <p>
+                Senfschälchen und Parmesanstreuer
+                sauber und vollständig bereitstellen.
+            </p>
+        </div>
+
+    </div>
+
+    <div class="glass"
+         style="margin-top:25px;padding:18px 25px;color:rgba(255,255,255,.7);">
+
+        <b style="color:#f4df9b;">Materialien:</b>
+        Glas · Edelstahl · Keramik · Kunststoff
+        &nbsp;&nbsp; | &nbsp;&nbsp;
+        <b style="color:#f4df9b;">Grundregel:</b>
+        Menagen immer als Einheit auf den Tisch stellen.
+
+    </div>
+
+    <div class="number">05 / 07</div>
+
+</section>
+
+
+<!-- =========================
+     SLIDE 6
+========================= -->
+
+<section class="slide">
+
+    <div class="category">05 · Spezial- & Hilfsmittel</div>
+
+    <div class="content">
+
+        <div class="glass info">
+
+            <h2>
+                Spezial- & <span>Hilfsmittel</span>
+            </h2>
+
+            <p>
+                Diese Gegenstände unterstützen das Servicepersonal
+                beim sicheren und professionellen Arbeiten.
+            </p>
+
+            <div class="items">
+
+                <div class="item">
+                    <b>Tabletts:</b>
+                    Serviertabletts mit rutschfester Oberfläche
+                </div>
+
+                <div class="item">
+                    <b>Untersetzer:</b>
+                    Schutz für Tischflächen und Möbel
+                </div>
+
+                <div class="item">
+                    <b>Rechauds:</b>
+                    Zum Warmhalten von Speisen
+                </div>
+
+                <div class="item">
+                    <b>Spezialbesteck:</b>
+                    Hummerzangen und Schneckengabeln
+                </div>
+
+                <div class="item">
+                    <b>Service-Regel:</b>
+                    Tablett auf der linken Hand tragen.
+                    Mit der rechten Hand servieren oder abräumen.
+                </div>
+
+            </div>
+
+        </div>
+
+        <img class="photo"
+        src="https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?auto=format&fit=crop&w=1200&q=85"
+        alt="Professioneller Service">
+
+    </div>
+
+    <div class="number">06 / 07</div>
+
+</section>
+
+
+<!-- =========================
+     SLIDE 7
+========================= -->
 
 <section class="slide cover">
-<div class="glass"><div class="kicker">Professioneller Service</div>
-<h2>Die wichtigsten <span class="gold">Grundregeln</span></h2>
-<div class="cards">
-<div class="card"><div class="card-icon">✓</div><h3>Sauberkeit</h3><p>Alle Serviergegenstände müssen sauber, gepflegt und unbeschädigt sein.</p></div>
-<div class="card"><div class="card-icon">✓</div><h3>Hygiene</h3><p>Besteck und Geschirr niemals an den Kontaktflächen anfassen.</p></div>
-<div class="card"><div class="card-icon">✓</div><h3>Eleganz</h3><p>Professionelles Servieren verbindet Sicherheit, Ordnung und gutes Auftreten.</p></div>
-</div><p style="margin-top:35px;color:rgba(255,255,255,.55);letter-spacing:2px;font-size:13px">ENDE DER PRÄSENTATION</p></div><div class="number">07 / 07</div>
+
+    <div class="glass">
+
+        <div class="kicker">
+            Professioneller Service
+        </div>
+
+        <h2>
+            Die wichtigsten <span class="gold">Grundregeln</span>
+        </h2>
+
+        <div class="cards">
+
+            <div class="card">
+                <div class="card-icon">✓</div>
+                <h3>Sauberkeit</h3>
+                <p>
+                    Alle Serviergegenstände müssen sauber,
+                    gepflegt und unbeschädigt sein.
+                </p>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">✓</div>
+                <h3>Hygiene</h3>
+                <p>
+                    Besteck und Geschirr niemals an
+                    den Kontaktflächen anfassen.
+                </p>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">✓</div>
+                <h3>Eleganz</h3>
+                <p>
+                    Professionelles Servieren verbindet
+                    Sicherheit, Ordnung und gutes Auftreten.
+                </p>
+            </div>
+
+        </div>
+
+        <p style="
+            margin-top:35px;
+            color:rgba(255,255,255,.55);
+            letter-spacing:2px;
+            font-size:13px;
+        ">
+            ENDE DER PRÄSENTATION
+        </p>
+
+    </div>
+
+    <div class="number">07 / 07</div>
+
 </section>
+
 </div>
 
-<div class="navigation"><button class="nav-btn" onclick="previousSlide()">‹</button><div class="dots" id="dots"></div><button class="nav-btn" onclick="nextSlide()">›</button></div>
+
+<!-- =========================
+     NAVIGATION
+========================= -->
+
+<div class="navigation">
+
+    <button class="nav-btn" onclick="previousSlide()">‹</button>
+
+    <div class="dots" id="dots"></div>
+
+    <button class="nav-btn" onclick="nextSlide()">›</button>
+
+</div>
+
 <div class="progress" id="progress"></div>
 
+
 <script>
-const slides = Array.from(document.querySelectorAll(".slide"));
+
+const slides = document.querySelectorAll(".slide");
 const dotsContainer = document.getElementById("dots");
 const progress = document.getElementById("progress");
-let current = 0;
-let touchStartX = 0;
-let touchStartY = 0;
 
-slides.forEach((slide, i) => {
-    const dot = document.createElement("button");
-    dot.type = "button";
-    dot.className = "dot" + (i === 0 ? " active" : "");
-    dot.setAttribute("aria-label", "Folie " + (i + 1));
-    dot.addEventListener("click", (e) => {
-        e.stopPropagation();
-        showSlide(i);
-    });
+let current = 0;
+
+/* Punkte erstellen */
+
+slides.forEach((slide, index) => {
+
+    const dot = document.createElement("div");
+
+    dot.className = "dot";
+
+    if(index === 0)
+        dot.classList.add("active");
+
+    dot.onclick = () => showSlide(index);
+
     dotsContainer.appendChild(dot);
+
 });
 
-const dots = Array.from(document.querySelectorAll(".dot"));
+
+const dots = document.querySelectorAll(".dot");
+
 
 function showSlide(index) {
-    if (index < 0) index = slides.length - 1;
-    if (index >= slides.length) index = 0;
+
+    if(index < 0)
+        index = slides.length - 1;
+
+    if(index >= slides.length)
+        index = 0;
 
     slides.forEach((slide, i) => {
-        slide.classList.remove("active", "previous");
-        if (i < index) slide.classList.add("previous");
+
+        slide.classList.remove("active");
+        slide.classList.remove("previous");
+
+        if(i < index)
+            slide.classList.add("previous");
+
     });
 
     slides[index].classList.add("active");
 
-    dots.forEach((dot, i) => {
-        dot.classList.toggle("active", i === index);
-    });
+    dots.forEach(dot =>
+        dot.classList.remove("active")
+    );
+
+    dots[index].classList.add("active");
 
     current = index;
-    progress.style.width = ((current + 1) / slides.length * 100) + "%";
+
+    progress.style.width =
+        ((current + 1) / slides.length * 100) + "%";
 }
+
 
 function nextSlide() {
     showSlide(current + 1);
 }
 
+
 function previousSlide() {
     showSlide(current - 1);
 }
 
-/* Große, sichere Klickflächen */
-document.querySelector(".navigation").addEventListener("click", (e) => {
-    const button = e.target.closest(".nav-btn");
-    if (!button) return;
-    e.preventDefault();
-    e.stopPropagation();
-
-    if (button.textContent.trim() === "›") {
-        nextSlide();
-    } else {
-        previousSlide();
-    }
-});
 
 /* Tastatur */
-document.addEventListener("keydown", (e) => {
-    if (e.key === "ArrowRight" || e.key === "PageDown" || e.key === " ") {
-        e.preventDefault();
+
+document.addEventListener("keydown", e => {
+
+    if(e.key === "ArrowRight" || e.key === " ") {
         nextSlide();
-    } else if (e.key === "ArrowLeft" || e.key === "PageUp") {
-        e.preventDefault();
-        previousSlide();
-    } else if (e.key === "Home") {
-        e.preventDefault();
-        showSlide(0);
-    } else if (e.key === "End") {
-        e.preventDefault();
-        showSlide(slides.length - 1);
     }
+
+    if(e.key === "ArrowLeft") {
+        previousSlide();
+    }
+
 });
 
-/* Touch: nur horizontales Wischen zählt */
-document.addEventListener("touchstart", (e) => {
-    if (!e.changedTouches.length) return;
-    touchStartX = e.changedTouches[0].clientX;
-    touchStartY = e.changedTouches[0].clientY;
-}, {passive: true});
 
-document.addEventListener("touchend", (e) => {
-    if (!e.changedTouches.length) return;
+/* Touch / Wischen */
 
-    const dx = e.changedTouches[0].clientX - touchStartX;
-    const dy = e.changedTouches[0].clientY - touchStartY;
+let touchStartX = 0;
 
-    if (Math.abs(dx) < 55 || Math.abs(dx) < Math.abs(dy)) return;
+document.addEventListener("touchstart", e => {
+    touchStartX = e.changedTouches[0].screenX;
+});
 
-    if (dx < 0) nextSlide();
-    else previousSlide();
-}, {passive: true});
+document.addEventListener("touchend", e => {
+
+    let touchEndX =
+        e.changedTouches[0].screenX;
+
+    if(touchEndX < touchStartX - 60)
+        nextSlide();
+
+    if(touchEndX > touchStartX + 60)
+        previousSlide();
+
+});
+
+
+/* Start */
 
 showSlide(0);
+
 </script>
+
 </body>
 </html>
